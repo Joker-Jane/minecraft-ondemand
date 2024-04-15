@@ -332,7 +332,7 @@ export class MinecraftStack extends Stack {
         ec2SecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(22), 'Allow SSH access');
 
         const ec2Instance = new ec2.Instance(this, 'MinecraftServerInstance', {
-            instanceName: `minecraft-${config.subdomainPart}-data`,
+            instanceName: `${config.subdomainPart}-data`,
             instanceType: new ec2.InstanceType('t2.micro'),
             machineImage: new ec2.AmazonLinuxImage(),
             vpc,

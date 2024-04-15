@@ -38,7 +38,7 @@ export class DomainStack extends Stack {
         });
 
         /* Create policy to allow route53 to log to cloudwatch */
-        const policyName = 'cw.r.route53-dns';
+        const policyName = `cw.r.route53-dns-${subdomain}`;
         const dnsWriteToCw = [
             new iam.PolicyStatement({
                 sid: 'AllowR53LogToCloudwatch',
@@ -60,7 +60,7 @@ export class DomainStack extends Stack {
         ];
         const cloudwatchLogResourcePolicy = new CWGlobalResourcePolicy(
             this,
-            'CloudwatchLogResourcePolicy',
+            `CloudwatchLogResourcePolicy-${subdomain}`,
             {policyName, statements: dnsWriteToCw}
         );
 
@@ -118,7 +118,7 @@ export class DomainStack extends Stack {
                 CLUSTER: config.clusterName,
                 SERVICE: config.serviceName,
             },
-            logRetention: logs.RetentionDays.THREE_DAYS, // TODO: parameterize
+            logRetention: logs.RetentionDays.THREE_DAYS,
         });
 
         /**
