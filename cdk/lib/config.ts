@@ -13,24 +13,20 @@ const resolveMinecraftEnvVars = (json = ''): MinecraftImageEnv => {
       ...JSON.parse(json),
     };
   } catch (e) {
-    console.error(
-      'Unable to resolve .env value for MINECRAFT_IMAGE_ENV_VARS_JSON.\
-      Defaults will be used'
-    );
-    return defaults;
+    throw new Error('Unable to resolve .env value for MINECRAFT_IMAGE_ENV_VARS_JSON.');
   }
 };
 
 export const resolveConfig = (): StackConfig => ({
   domainName: process.env.DOMAIN_NAME || '',
-  subdomainPart: process.env.SUBDOMAIN_PART || 'minecraft',
-  serverRegion: process.env.SERVER_REGION || 'us-east-1',
+  subdomainPart: process.env.SUBDOMAIN_PART || '',
+  serverRegion: process.env.SERVER_REGION || '',
   minecraftEdition:
     process.env.MINECRAFT_EDITION === 'bedrock' ? 'bedrock' : 'java',
-  shutdownMinutes: process.env.SHUTDOWN_MINUTES || '20',
+  shutdownMinutes: process.env.SHUTDOWN_MINUTES || '30',
   startupMinutes: process.env.STARTUP_MINUTES || '10',
-  useFargateSpot: stringAsBoolean(process.env.USE_FARGATE_SPOT) || false,
-  taskCpu: +(process.env.TASK_CPU || 1024),
+  useFargateSpot: stringAsBoolean(process.env.USE_FARGATE_SPOT) || true,
+  taskCpu: +(process.env.TASK_CPU || 8192),
   taskMemory: +(process.env.TASK_MEMORY || 2048),
   vpcId: process.env.VPC_ID || '',
   minecraftImageEnv: resolveMinecraftEnvVars(
@@ -43,5 +39,9 @@ export const resolveConfig = (): StackConfig => ({
     accountId: process.env.TWILIO_ACCOUNT_ID || '',
     authCode: process.env.TWILIO_AUTH_CODE || '',
   },
+  clusterName: process.env.CLUSTER_NAME || `minecraft-server-${process.env.SUBDOMAINPART}`,
+  serviceName: process.env.SERVICE_NAME || 'minecraft-server',
+  serverContainerName: process.env.SERVER_CONTAINER_NAME || 'minecraft-server',
+  ecsVolumeName: process.env.ECS_VOLUME_NAME || `minecraft-server-${process.env.SUBDOMAINPART}-data`,
   debug: stringAsBoolean(process.env.DEBUG) || false,
 });
