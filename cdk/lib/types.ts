@@ -144,10 +144,6 @@ export interface StackConfig {
      * - CloudWatch Logs for the `minecraft-server` ECS Container
      * - CloudWatch Logs for the `minecraft-ecsfargate-watchdog` ECS Container
      */
-    clusterName: string;
-    serviceName: string;
-    serverContainerName: string;
-    ecsVolumeName: string;
     debug: boolean;
 }
 

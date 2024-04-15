@@ -9,4 +9,9 @@ export const constants = {
     // LAUNCHER_LAMBDA_ARN_SSM_PARAMETER: 'LauncherLambdaRoleArn',
     JAVA_EDITION_DOCKER_IMAGE: 'itzg/minecraft-server',
     BEDROCK_EDITION_DOCKER_IMAGE: 'itzg/minecraft-bedrock-server',
+
+    CLUSTER_NAME: `minecraft-server-${process.env.SUBDOMAIN_PART}`,
+    SERVICE_NAME: 'minecraft-server',
+    SERVER_CONTAINER_NAME: 'minecraft-server',
+    ECS_VOLUME_NAME: `minecraft-server-${process.env.SUBDOMAIN_PART}-data`,
 }

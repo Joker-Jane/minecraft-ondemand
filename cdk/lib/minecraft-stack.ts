@@ -83,7 +83,7 @@ export class MinecraftStack extends Stack {
         efsReadWriteDataPolicy.attachToRole(ecsTaskRole);
 
         const cluster = new ecs.Cluster(this, 'Cluster', {
-            clusterName: config.clusterName,
+            clusterName: constants.CLUSTER_NAME,
             vpc,
             containerInsights: true, // TODO: Add config for container insights
             enableFargateCapacityProviders: true,
@@ -98,7 +98,7 @@ export class MinecraftStack extends Stack {
                 cpu: config.taskCpu,
                 volumes: [
                     {
-                        name: config.ecsVolumeName,
+                        name: constants.ECS_VOLUME_NAME,
                         efsVolumeConfiguration: {
                             fileSystemId: fileSystem.fileSystemId,
                             transitEncryption: 'ENABLED',
@@ -120,7 +120,7 @@ export class MinecraftStack extends Stack {
             this,
             'ServerContainer',
             {
-                containerName: config.serverContainerName,
+                containerName: constants.SERVER_CONTAINER_NAME,
                 image: ecs.ContainerImage.fromRegistry(minecraftServerConfig.image),
                 portMappings: [
                     {
@@ -135,7 +135,7 @@ export class MinecraftStack extends Stack {
                 logging: config.debug
                     ? new ecs.AwsLogDriver({
                         logRetention: logs.RetentionDays.THREE_DAYS,
-                        streamPrefix: config.serverContainerName,
+                        streamPrefix: constants.SERVER_CONTAINER_NAME,
                     })
                     : undefined,
             }
@@ -143,7 +143,7 @@ export class MinecraftStack extends Stack {
 
         minecraftServerContainer.addMountPoints({
             containerPath: '/data',
-            sourceVolume: config.ecsVolumeName,
+            sourceVolume: constants.ECS_VOLUME_NAME,
             readOnly: false,
         });
 
@@ -177,7 +177,7 @@ export class MinecraftStack extends Stack {
                 ],
                 taskDefinition: taskDefinition,
                 platformVersion: ecs.FargatePlatformVersion.LATEST,
-                serviceName: config.serviceName,
+                serviceName: constants.SERVICE_NAME,
                 desiredCount: 0,
                 assignPublicIp: true,
                 securityGroups: [serviceSecurityGroup],
@@ -234,8 +234,8 @@ export class MinecraftStack extends Stack {
                 essential: true,
                 taskDefinition: taskDefinition,
                 environment: {
-                    CLUSTER: config.clusterName,
-                    SERVICE: config.serviceName,
+                    CLUSTER: constants.CLUSTER_NAME,
+                    SERVICE: constants.SERVICE_NAME,
                     DNSZONE: hostedZoneId,
                     SERVERNAME: `${config.subdomainPart}.${config.domainName}`,
                     SNSTOPIC: snsTopicArn,
@@ -268,7 +268,7 @@ export class MinecraftStack extends Stack {
                             {
                                 service: 'ecs',
                                 resource: 'task',
-                                resourceName: `${config.clusterName}/*`,
+                                resourceName: `${constants.CLUSTER_NAME}/*`,
                                 arnFormat: ArnFormat.SLASH_RESOURCE_NAME,
                             },
                             this

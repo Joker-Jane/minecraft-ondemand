@@ -115,8 +115,8 @@ export class DomainStack extends Stack {
             runtime: lambda.Runtime.PYTHON_3_8,
             environment: {
                 REGION: config.serverRegion,
-                CLUSTER: config.clusterName,
-                SERVICE: config.serviceName,
+                CLUSTER: constants.CLUSTER_NAME,
+                SERVICE: constants.SERVICE_NAME,
             },
             logRetention: logs.RetentionDays.THREE_DAYS,
         });
