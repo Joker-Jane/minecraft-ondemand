@@ -340,7 +340,7 @@ export class MinecraftStack extends Stack {
             'mount -a'
         );
 
-        const ec2Role = new iam.Role(this, 'TaskRole', {
+        const ec2Role = new iam.Role(this, 'EC2Role', {
             assumedBy: new iam.ServicePrincipal('ecs-tasks.amazonaws.com'),
             description: 'Minecraft EC2 data server role',
         });
