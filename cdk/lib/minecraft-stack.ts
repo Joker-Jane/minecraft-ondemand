@@ -354,8 +354,8 @@ export class MinecraftStack extends Stack {
         ec2Instance.userData.addCommands(
             'yum install -y amazon-efs-utils',
             'yum install -y nfs-utils',
-            //`echo "${fileSystem.fileSystemId}.efs.${this.region}.amazonaws.com:/ /home/ec2-user/data efs defaults,_netdev 0 0" >> /etc/fstab`,
-            //'mount -a'
+            `echo "${fileSystem.fileSystemId}.efs.${this.region}.amazonaws.com:/ /home/ec2-user/data efs defaults,_netdev 0 0" >> /etc/fstab`,
+            'mount -a'
         );
     }
 }
