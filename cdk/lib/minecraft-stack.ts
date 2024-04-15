@@ -331,6 +331,15 @@ export class MinecraftStack extends Stack {
         });
         ec2SecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(22), 'Allow SSH access');
 
+        const userData = ec2.UserData.forLinux();
+        userData.addCommands(
+            'yum install -y amazon-efs-utils',
+            'yum install -y nfs-utils',
+            'mkdir -p /home/ec2-user/data',
+            `echo "${fileSystem.fileSystemId}.efs.${this.region}.amazonaws.com:/ /home/ec2-user/data efs defaults,_netdev 0 0" >> /etc/fstab`,
+            'mount -a'
+        );
+
         const ec2Instance = new ec2.Instance(this, 'MinecraftServerInstance', {
             instanceName: `${config.subdomainPart}-data`,
             instanceType: new ec2.InstanceType('t2.micro'),
@@ -346,19 +355,10 @@ export class MinecraftStack extends Stack {
                 deviceName: '/dev/xvda',
                 volume: ec2.BlockDeviceVolume.ebs(8, {volumeType: ec2.EbsDeviceVolumeType.GP3}),
             }],
+            userData: userData,
         });
 
         ec2Instance.connections.allowFrom(fileSystem.connections, Port.tcp(2049));
         fileSystem.connections.allowDefaultPortFrom(ec2Instance.connections)
-
-        ec2Instance.userData.addCommands(
-            'yum install -y amazon-efs-utils',
-            'yum install -y nfs-utils',
-            'mkdir -p /home/ec2-user/data',
-            `echo "${fileSystem.fileSystemId}.efs.${this.region}.amazonaws.com:/ /home/ec2-user/data efs defaults,_netdev 0 0" >> /etc/fstab`,
-            'mount -a'
-        );
     }
 }
-//fs-049c26459c61c39fb
-// echo "fs-049c26459c61c39fb.efs.ap-northeast-1.amazonaws.com:/ /home/ec2-user/data efs defaults,_netdev 0 0"
