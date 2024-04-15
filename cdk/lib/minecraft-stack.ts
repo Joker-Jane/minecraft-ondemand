@@ -340,12 +340,33 @@ export class MinecraftStack extends Stack {
             'mount -a'
         );
 
+        const ec2Role = new iam.Role(this, 'TaskRole', {
+            assumedBy: new iam.ServicePrincipal('ecs-tasks.amazonaws.com'),
+            description: 'Minecraft EC2 data server role',
+        });
+
+        const ec2S3GetObjectPolicy = new iam.Policy(this, 'AmazonS3GetObjectPolicy', {
+            statements: [
+                new iam.PolicyStatement({
+                    sid: 'AmazonS3GetObjectPolicy',
+                    effect: iam.Effect.ALLOW,
+                    actions: [
+                        "s3:GetObject",
+                    ],
+                    resources: ["arn:aws:s3:::*/*"],
+                }),
+            ],
+        });
+
+        ec2S3GetObjectPolicy.attachToRole(ec2Role);
+
         const ec2Instance = new ec2.Instance(this, 'MinecraftServerInstance', {
             instanceName: `${config.subdomainPart}-data`,
             instanceType: new ec2.InstanceType('t2.micro'),
             machineImage: new ec2.AmazonLinuxImage({
                 generation: ec2.AmazonLinuxGeneration.AMAZON_LINUX_2
             }),
+            role: ec2Role,
             vpc,
             vpcSubnets: {
                 subnetType: ec2.SubnetType.PUBLIC
