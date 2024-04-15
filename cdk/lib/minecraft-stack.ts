@@ -345,13 +345,13 @@ export class MinecraftStack extends Stack {
             description: 'Minecraft EC2 data server role',
         });
 
-        const ec2S3GetObjectPolicy = new iam.Policy(this, 'AmazonS3GetObjectPolicy', {
+        const ec2S3GetObjectPolicy = new iam.Policy(this, 'AmazonS3BucketPolicy', {
             statements: [
                 new iam.PolicyStatement({
-                    sid: 'AmazonS3GetObjectPolicy',
                     effect: iam.Effect.ALLOW,
                     actions: [
                         "s3:GetObject",
+                        "s3:ListBucket",
                     ],
                     resources: ["arn:aws:s3:::*/*"],
                 }),
