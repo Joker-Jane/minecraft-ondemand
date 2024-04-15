@@ -6,10 +6,8 @@ import {stringAsBoolean} from './util';
 dotenv.config({path: path.resolve(__dirname, '../.env')});
 
 const resolveMinecraftEnvVars = (json = ''): MinecraftImageEnv => {
-    const defaults = {EULA: 'TRUE'};
     try {
         return {
-            ...defaults,
             ...JSON.parse(json),
         };
     } catch (e) {
