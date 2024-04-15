@@ -345,19 +345,7 @@ export class MinecraftStack extends Stack {
             description: 'Minecraft EC2 data server role',
         });
 
-        const ec2S3GetObjectPolicy = new iam.Policy(this, 'AmazonS3BucketPolicy', {
-            statements: [
-                new iam.PolicyStatement({
-                    effect: iam.Effect.ALLOW,
-                    actions: [
-                        "s3:GetObject",
-                    ],
-                    resources: ["arn:aws:s3:::*/*"],
-                }),
-            ],
-        });
-
-        ec2S3GetObjectPolicy.attachToRole(ec2Role);
+        ec2Role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonS3ReadOnlyAccess'));
 
         const ec2Instance = new ec2.Instance(this, 'MinecraftServerInstance', {
             instanceName: `${config.subdomainPart}-data`,
