@@ -193,7 +193,7 @@ export class MinecraftStack extends Stack {
             this,
             'Route53HostedZoneIdReader',
             {
-                parameterName: constants.HOSTED_ZONE_SSM_PARAMETER,
+                parameterName: `MinecraftHostedZoneID-${config.subdomainPart}`,
                 region: constants.DOMAIN_STACK_REGION,
             }
         ).getParameterValue();
@@ -292,7 +292,7 @@ export class MinecraftStack extends Stack {
             this,
             'launcherLambdaRoleArn',
             {
-                parameterName: constants.LAUNCHER_LAMBDA_ARN_SSM_PARAMETER,
+                parameterName: `LauncherLambdaRoleArn-${config.subdomainPart}`,
                 region: constants.DOMAIN_STACK_REGION,
             }
         ).getParameterValue();

@@ -150,7 +150,7 @@ export class DomainStack extends Stack {
         new ssm.StringParameter(this, 'HostedZoneParam', {
             allowedPattern: '.*',
             description: 'Hosted zone ID for minecraft server',
-            parameterName: constants.HOSTED_ZONE_SSM_PARAMETER,
+            parameterName: `MinecraftHostedZoneID-${config.subdomainPart}`,
             stringValue: subdomainHostedZone.hostedZoneId,
         });
 
@@ -162,7 +162,7 @@ export class DomainStack extends Stack {
         new ssm.StringParameter(this, 'LauncherLambdaParam', {
             allowedPattern: '.*S.*',
             description: 'Minecraft launcher execution role ARN',
-            parameterName: constants.LAUNCHER_LAMBDA_ARN_SSM_PARAMETER,
+            parameterName: `LauncherLambdaRoleArn-${config.subdomainPart}`,
             stringValue: launcherLambda.role?.roleArn || '',
         });
     }
