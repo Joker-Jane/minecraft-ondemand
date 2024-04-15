@@ -39,9 +39,9 @@ export const resolveConfig = (): StackConfig => ({
         accountId: process.env.TWILIO_ACCOUNT_ID || '',
         authCode: process.env.TWILIO_AUTH_CODE || '',
     },
-    clusterName: process.env.CLUSTER_NAME || `minecraft-server-${process.env.SUBDOMAINPART}`,
+    clusterName: process.env.CLUSTER_NAME || `minecraft-server-${process.env.SUBDOMAIN_PART}`,
     serviceName: process.env.SERVICE_NAME || 'minecraft-server',
     serverContainerName: process.env.SERVER_CONTAINER_NAME || 'minecraft-server',
-    ecsVolumeName: process.env.ECS_VOLUME_NAME || `minecraft-server-${process.env.SUBDOMAINPART}-data`,
+    ecsVolumeName: process.env.ECS_VOLUME_NAME || `minecraft-server-${process.env.SUBDOMAIN_PART}-data`,
     debug: stringAsBoolean(process.env.DEBUG) || false,
 });
