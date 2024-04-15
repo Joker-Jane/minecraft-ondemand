@@ -334,7 +334,9 @@ export class MinecraftStack extends Stack {
         const ec2Instance = new ec2.Instance(this, 'MinecraftServerInstance', {
             instanceName: `${config.subdomainPart}-data`,
             instanceType: new ec2.InstanceType('t2.micro'),
-            machineImage: new ec2.AmazonLinuxImage(),
+            machineImage: new ec2.AmazonLinuxImage({
+                generation: ec2.AmazonLinuxGeneration.AMAZON_LINUX_2
+            }),
             vpc,
             vpcSubnets: {
                 subnetType: ec2.SubnetType.PUBLIC
@@ -352,8 +354,8 @@ export class MinecraftStack extends Stack {
         ec2Instance.userData.addCommands(
             'yum install -y amazon-efs-utils',
             'yum install -y nfs-utils',
-            `echo "${fileSystem.fileSystemId}.efs.${this.region}.amazonaws.com:/ /home/ec2-user/data efs defaults,_netdev 0 0" >> /etc/fstab`,
-            'mount -a'
+            //`echo "${fileSystem.fileSystemId}.efs.${this.region}.amazonaws.com:/ /home/ec2-user/data efs defaults,_netdev 0 0" >> /etc/fstab`,
+            //'mount -a'
         );
     }
 }
