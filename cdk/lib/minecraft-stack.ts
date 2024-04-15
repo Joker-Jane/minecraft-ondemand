@@ -341,7 +341,7 @@ export class MinecraftStack extends Stack {
         );
 
         const ec2Role = new iam.Role(this, 'EC2Role', {
-            assumedBy: new iam.ServicePrincipal('ecs-tasks.amazonaws.com'),
+            assumedBy: new iam.ServicePrincipal('ec2.amazonaws.com'),
             description: 'Minecraft EC2 data server role',
         });
 
@@ -351,7 +351,6 @@ export class MinecraftStack extends Stack {
                     effect: iam.Effect.ALLOW,
                     actions: [
                         "s3:GetObject",
-                        "s3:ListBucket",
                     ],
                     resources: ["arn:aws:s3:::*/*"],
                 }),
