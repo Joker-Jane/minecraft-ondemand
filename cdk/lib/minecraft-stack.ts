@@ -255,7 +255,7 @@ export class MinecraftStack extends Stack {
             }
         );
 
-        const serviceControlPolicy = new iam.Policy(this, 'ServiceControlPolicy', {
+        const serviceControlPolicy = new iam.Policy(this, `ServiceControlPolicy-${config.subdomainPart}`, {
             statements: [
                 new iam.PolicyStatement({
                     sid: 'AllowAllOnServiceAndTask',
@@ -298,7 +298,7 @@ export class MinecraftStack extends Stack {
         ).getParameterValue();
         const launcherLambdaRole = iam.Role.fromRoleArn(
             this,
-            `LauncherLambdaRole-${config.subdomainPart}`,
+            `LauncherLambdaRole`,
             launcherLambdaRoleArn
         );
 
