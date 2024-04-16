@@ -298,9 +298,10 @@ export class MinecraftStack extends Stack {
         ).getParameterValue();
         const launcherLambdaRole = iam.Role.fromRoleArn(
             this,
-            'LauncherLambdaRole',
+            `LauncherLambdaRole-${config.subdomainPart}`,
             launcherLambdaRoleArn
         );
+
         serviceControlPolicy.attachToRole(launcherLambdaRole);
 
         /**
