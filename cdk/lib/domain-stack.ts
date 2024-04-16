@@ -115,8 +115,8 @@ export class DomainStack extends Stack {
             runtime: lambda.Runtime.PYTHON_3_8,
             environment: {
                 REGION: config.serverRegion,
-                CLUSTER: constants.CLUSTER_NAME,
-                SERVICE: constants.SERVICE_NAME,
+                CLUSTER: `minecraft-server-${config.subdomainPart}`,
+                SERVICE: 'minecraft-server',
             },
             logRetention: logs.RetentionDays.THREE_DAYS,
         });
