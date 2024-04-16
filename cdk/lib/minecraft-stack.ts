@@ -255,7 +255,7 @@ export class MinecraftStack extends Stack {
             }
         );
 
-        const serviceControlPolicy = new iam.Policy(this, `ServiceControlPolicy-${config.subdomainPart}`, {
+        const serviceControlPolicy = new iam.Policy(this, `ServiceControlPolicy`, {
             statements: [
                 new iam.PolicyStatement({
                     sid: 'AllowAllOnServiceAndTask',
